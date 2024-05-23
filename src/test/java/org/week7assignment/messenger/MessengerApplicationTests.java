@@ -1,4 +1,4 @@
-package com.week7assignment.messenger;
+package org.week7assignment.messenger;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
