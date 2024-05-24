@@ -20,7 +20,7 @@ import org.week7assignment.messenger.service.UserService;
 @Slf4j
 @RestController
 @AllArgsConstructor
-@RequestMapping("/users")
+@RequestMapping("/auth")
 public class AuthController {
     private final UserService userService;
 
@@ -40,18 +40,12 @@ public class AuthController {
         String bearerToken = JwtEncoder.encodeJwtToken(tokenResponseDto.getAccessToken());
         log.info("컨트롤러 accessToken = {}", bearerToken);
 
-        // 쿠키 생성
-        addCookie(bearerToken, response);
-        return new ResponseEntity<>(ResponseDto.success(HttpStatus.OK, "사용자 로그인 완료", tokenResponseDto), HttpStatus.OK);
-    }
-
-    public static void addCookie(String token, HttpServletResponse response) {
-        Cookie cookie = new Cookie(AuthenticationExtractor.TOKEN_COOKIE_NAME, token);
+        Cookie cookie = new Cookie(AuthenticationExtractor.TOKEN_COOKIE_NAME, bearerToken);
         cookie.setPath("/"); // 모든 경로에서 쿠키 사용 가능
         cookie.setHttpOnly(true); // 쿠키는 HTTP 요청과 함께여야지만 전송 가능하게
         log.info("addCookie 메서드 cookie={}", cookie.getValue());
-
         response.addCookie(cookie);
+        return new ResponseEntity<>(ResponseDto.success(HttpStatus.OK, "사용자 로그인 완료", tokenResponseDto), HttpStatus.OK);
     }
 
     // 로그아웃

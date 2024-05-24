@@ -34,6 +34,7 @@ public class OrganizationController {
     @PostMapping("{id}/join")
     public ResponseEntity<ResponseDto<Void>> joinOrganization(@PathVariable("id") UUID organizationId,
                                                               @AuthenticatedUser User user) {
+        log.info("Controller AuthenticatedUser={}",user.getId());
         organizationService.joinOrganization(user, organizationId);
         return new ResponseEntity<>(ResponseDto.success(HttpStatus.OK, "소속 가입 완료"), HttpStatus.OK);
     }

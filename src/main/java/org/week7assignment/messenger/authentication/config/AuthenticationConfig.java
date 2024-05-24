@@ -23,8 +23,7 @@ public class AuthenticationConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns("/users") // 유저 수정, 삭제 시
                 .addPathPatterns("/messages/**") // 모든 메세지 기능 사용시
-                .addPathPatterns("/organizations/**") // 모든 소속 기능 사용시
-                .excludePathPatterns("/organizations"); // 소속 생성시는 제외
+                .addPathPatterns("/organizations/**"); // 모든 소속 기능 사용시
     }
 
     @Override

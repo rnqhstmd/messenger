@@ -35,12 +35,10 @@ public class OrganizationMemberArgumentResolver implements HandlerMethodArgument
         log.info("Resolver user={}",user.getId());
         Organization organization = organizationRepository.findById(user.getOrganization().getId())
                 .orElseThrow(() -> new NotFoundException(ErrorCode.ORGANIZATION_NOT_FOUND));
-
-        if (organization.getUsers()
-                .stream()
-                .anyMatch(u -> u.getId().equals(user.getId()))) {
+        log.info("user organizationId={}",user.getOrganization().getId());
+        if (user.getOrganization().getId().equals(organization.getId())) {
             return user;
         }
-        throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_USER, "소속을 찾으려 했으나 찾을 수 없습니다.");
+        throw new UnauthorizedException(ErrorCode.UNAUTHORIZED_USER);
     }
 }

@@ -50,7 +50,7 @@ public class UserService {
         // 비밀번호 검증
         String plainPassword = userLoginDto.getPassword();
         if (!passwordHashEncryption.matches(plainPassword, user.getPassword())) {
-            throw new UnauthorizedException(ErrorCode.INVALID_PASSWORD, "로그인하려했으나 패스워드가 유효하지 않습니다.");
+            throw new UnauthorizedException(ErrorCode.INVALID_PASSWORD);
         }
 
         String token = jwtTokenProvider.createToken(String.valueOf(user.getId()));

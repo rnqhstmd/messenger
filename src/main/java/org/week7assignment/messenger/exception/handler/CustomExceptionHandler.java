@@ -15,40 +15,41 @@ import org.week7assignment.messenger.exception.errorCode.ErrorCode;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ResponseDto> handleConflictException(BadRequestException badRequestException) {
+        writeLog(badRequestException);
+        return res(badRequestException, HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ResponseDto> handleConflictException(ConflictException conflictException) {
         writeLog(conflictException);
-        return new ResponseEntity<>(ResponseDto.error(HttpStatus.CONFLICT,
-                conflictException.getErrorCode().getMessage()), HttpStatus.CONFLICT);
+        return res(conflictException, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ResponseDto> handleNotFoundException(NotFoundException notFoundException) {
         writeLog(notFoundException);
-        return new ResponseEntity<>(ResponseDto.error(HttpStatus.NOT_FOUND,
-                notFoundException.getErrorCode().getMessage()), HttpStatus.NOT_FOUND);
+        return res(notFoundException, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<ResponseDto> handleUnauthorizedException(UnauthorizedException unauthorizedException) {
         writeLog(unauthorizedException);
-        return new ResponseEntity<>(ResponseDto.error(HttpStatus.UNAUTHORIZED,
-                unauthorizedException.getErrorCode().getMessage()), HttpStatus.UNAUTHORIZED);
+        return res(unauthorizedException, HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseDto> handleException(Exception exception) {
         this.writeLog(exception);
-        return new ResponseEntity<>(ResponseDto.error(HttpStatus.INTERNAL_SERVER_ERROR,
-                exception.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        return res(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ResponseDto> handleMethodArgumentNotValidException(MethodArgumentNotValidException methodArgumentNotValidException) {
         FieldError fieldError = methodArgumentNotValidException.getBindingResult().getFieldError();
         if (fieldError == null) {
-            return new ResponseEntity<>(ResponseDto.error(HttpStatus.BAD_REQUEST, methodArgumentNotValidException.getMessage()),
-                    HttpStatus.BAD_REQUEST);
+            return res(methodArgumentNotValidException.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         ErrorCode errorCode = ErrorCode.dtoValidationErrorCode(fieldError.getCode());
@@ -57,8 +58,15 @@ public class CustomExceptionHandler {
 
         writeLog(dtoValidationException);
 
-        return new ResponseEntity<>(ResponseDto.error(HttpStatus.BAD_REQUEST,
-                errorCode.getMessage() +"***"+ detail), HttpStatus.BAD_REQUEST);
+        return res(errorCode.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    private ResponseEntity<ResponseDto> res(CustomException customException, HttpStatus status) {
+        return new ResponseEntity<>(ResponseDto.error(status, customException.getErrorCode().getMessage()), status);
+    }
+
+    private ResponseEntity<ResponseDto> res(String message, HttpStatus status) {
+        return new ResponseEntity<>(ResponseDto.error(status, message), status);
     }
 
     private void writeLog(CustomException customException) {

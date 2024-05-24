@@ -48,7 +48,7 @@ public class JwtTokenProvider {
                     .getSubject();
             return payload;
         } catch (JwtException e) {
-            throw new UnauthorizedException(ErrorCode.INVALID_TOKEN, e.getMessage());
+            throw new UnauthorizedException(ErrorCode.INVALID_TOKEN);
         }
     }
 }

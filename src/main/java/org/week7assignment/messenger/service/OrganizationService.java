@@ -39,10 +39,9 @@ public class OrganizationService {
         Organization organization = validOrganization(organizationId);
 
         // 소속에 이미 존재하는 유저인지 검증
-        if (organization.getUsers().equals(user)) {
-            throw new ConflictException(ErrorCode.USER_ALREADY_EXISTS);
+        if (user.getOrganization() != null && user.getOrganization().equals(organization)) {
+            throw new ConflictException(ErrorCode.USER_ALREADY_JOINED);
         }
-
         user.setOrganization(organization);
         userRepository.save(user);
     }

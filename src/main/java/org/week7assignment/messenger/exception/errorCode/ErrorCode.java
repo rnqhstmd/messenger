@@ -6,15 +6,19 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
-    // NotFoundException
+
+    // BadRequestException 잘못된 요청
+    MESSAGE_ALREADY_READ("4000", "이미 읽은 메세지입니다."),
+
+    // NotFoundException 잘못된 리소스 접근
     USER_NOT_FOUND("4040", "유저를 찾을 수 없습니다."),
     ORGANIZATION_NOT_FOUND("4043", "소속을 찾을 수 없습니다."),
     MESSAGE_NOT_FOUND("4044","메세지를 찾을 수 없습니다."),
 
-    // ConflictException
+    // ConflictException 중복된 리소스
     USER_ALREADY_EXISTS("4090", "이미 존재하는 유저입니다."),
-    DUPLICATED_EMAIL("4091","존재하는 이메일입니다."),
-    MESSAGE_ALREADY_READ("4092", "이미 읽은 메세지입니다."),
+    USER_ALREADY_JOINED("4091","이미 가입된 유저입니다."),
+    DUPLICATED_EMAIL("4092","존재하는 이메일입니다."),
     ORGANIZATION_ALREADY_EXISTS("4093", "이미 존재하는 조직입니다."),
 
     // UnauthorizedException

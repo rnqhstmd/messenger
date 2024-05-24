@@ -25,6 +25,6 @@ public class JwtEncoder {
             return decodedValue.substring(TOKEN_TYPE.length());
         }
 
-        throw new UnauthorizedException(ErrorCode.INVALID_TOKEN, "");
+        throw new UnauthorizedException(ErrorCode.INVALID_TOKEN);
     }
 }

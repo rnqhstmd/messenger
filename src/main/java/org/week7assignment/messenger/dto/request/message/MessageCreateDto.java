@@ -17,5 +17,6 @@ public class MessageCreateDto {
     @NotNull(message = "메세지가 비어있습니다.")
     @Length(min = 1, max = 100, message = "메세지는 최소 1글자 이상, 100글자 이하로 작성해주세요.")
     private final String content;
+    @NotNull(message = "수신자가 비어있습니다.")
     private final List<UUID> recipients;
 }
