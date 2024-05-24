@@ -59,4 +59,4 @@ out/
 hs_err_pid*
 replay_pid*
 ### Exclude application.properties ###
-src/main/resources/application.properties
+application.properties
